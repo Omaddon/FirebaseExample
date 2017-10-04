@@ -40,7 +40,6 @@ class AuthorPostList: UITableViewController {
     let postsReference = Database.database().reference(withPath: "posts")
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -51,7 +50,9 @@ class AuthorPostList: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
         self.refreshControl?.addTarget(self, action: #selector(hadleRefresh(_:)), for: UIControlEvents.valueChanged)
-
+        
+//        postsReference.database.isPersistenceEnabled = true
+//        postsReference.keepSynced(true)
     }
     
     
