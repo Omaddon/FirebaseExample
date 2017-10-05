@@ -65,7 +65,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z60-VJ-e0s" id="Yux-IA-dDy">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -158,6 +158,12 @@
                                     <action selector="newPostInFB:" destination="Itr-Rl-A1y" eventType="touchUpInside" id="RKt-SA-9Jr"/>
                                 </connections>
                             </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9f4-65-cE6">
+                                <rect key="frame" x="0.0" y="64" width="375" height="4"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="4" id="h9S-oN-H7b"/>
+                                </constraints>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -180,9 +186,12 @@
                             <constraint firstItem="dId-mV-sZu" firstAttribute="leading" secondItem="KWB-rI-14l" secondAttribute="leadingMargin" id="fac-Sd-IO4"/>
                             <constraint firstItem="M8z-ex-o2m" firstAttribute="trailing" secondItem="KWB-rI-14l" secondAttribute="trailingMargin" id="fhM-Si-r5P"/>
                             <constraint firstItem="FXO-wO-ke0" firstAttribute="leading" secondItem="Tbd-tI-Ip8" secondAttribute="trailing" constant="145" id="iau-HU-PCk"/>
+                            <constraint firstItem="9f4-65-cE6" firstAttribute="top" secondItem="cTT-H6-D0y" secondAttribute="bottom" id="jHS-7o-Vgn"/>
+                            <constraint firstAttribute="trailing" secondItem="9f4-65-cE6" secondAttribute="trailing" id="js1-NF-VJL"/>
                             <constraint firstItem="WvL-11-TYV" firstAttribute="trailing" secondItem="hfI-rb-XXj" secondAttribute="trailing" id="kqr-Af-vGw"/>
                             <constraint firstItem="dId-mV-sZu" firstAttribute="top" secondItem="cTT-H6-D0y" secondAttribute="bottom" constant="40" id="oF8-0u-WRH"/>
                             <constraint firstItem="WvL-11-TYV" firstAttribute="leading" secondItem="hfI-rb-XXj" secondAttribute="leading" id="tcf-AL-3ba"/>
+                            <constraint firstItem="9f4-65-cE6" firstAttribute="leading" secondItem="KWB-rI-14l" secondAttribute="leading" id="wdU-We-w9q"/>
                             <constraint firstItem="Fmi-pa-Jco" firstAttribute="top" secondItem="M8z-ex-o2m" secondAttribute="bottom" id="yCy-mc-BqZ"/>
                             <constraint firstItem="Q4q-Wo-vUh" firstAttribute="top" secondItem="dId-mV-sZu" secondAttribute="bottom" constant="18" id="yQr-DI-ASb"/>
                             <constraint firstItem="M8z-ex-o2m" firstAttribute="top" secondItem="Uyp-v1-iTO" secondAttribute="bottom" constant="32" id="ycM-EC-H0b"/>
@@ -204,6 +213,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="imagePost" destination="M8z-ex-o2m" id="wjb-5d-bKt"/>
+                        <outlet property="progressView" destination="9f4-65-cE6" id="9UP-xH-sKW"/>
                         <outlet property="textPostTxt" destination="WvL-11-TYV" id="aKg-ek-ECE"/>
                         <outlet property="titlePostTxt" destination="Q4q-Wo-vUh" id="xJf-xi-iaq"/>
                     </connections>

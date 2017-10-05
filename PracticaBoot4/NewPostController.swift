@@ -15,6 +15,7 @@ class NewPostController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBOutlet weak var titlePostTxt: UITextField!
     @IBOutlet weak var textPostTxt: UITextField!
     @IBOutlet weak var imagePost: UIImageView!
+    @IBOutlet weak var progressView: UIProgressView!
     
     var isReadyToPublish: Bool = false
     var imageCaptured: UIImage! {
@@ -24,6 +25,8 @@ class NewPostController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     
     let postsReference = Database.database().reference(withPath: "posts")
+    let storageRef = Storage.storage().reference().child("imgPosts")
+    var uploadTask: StorageUploadTask?
     
     
     override func viewDidLoad() {
@@ -45,13 +48,24 @@ class NewPostController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
 
     @IBAction func savePostInCloud(_ sender: Any) {
-        // preparado para implementar codigo que persita en el cloud
+        var newPost: [String: Any] = ["title" : self.titlePostTxt.text ?? "",
+                                      "description" : self.textPostTxt.text ?? "",
+                                      "owner" : Auth.auth().currentUser?.uid ?? "none"]
+        
+        // Primero subimos el objeto
+        self.uploadFrom(buffer: UIImageJPEGRepresentation(self.imageCaptured, 0.5)!) { (url) in
+            if url != nil {
+                newPost["photo"] = url.absoluteString
+            }
+            let newPostFb = self.postsReference.childByAutoId()
+            newPostFb.setValue(newPost)
+        }
     }
     
     
     @IBAction func newPostInFB(_ sender: Any) {
-        let newPost: [String: Any] = ["title" : self.titlePostTxt.text,
-                                      "description" : self.textPostTxt.text]
+        let newPost: [String: Any] = ["title" : self.titlePostTxt.text ?? "",
+                                      "description" : self.textPostTxt.text ?? ""]
         
         let newPostFb = postsReference.childByAutoId()
         newPostFb.setValue(newPost)
@@ -109,6 +123,52 @@ class NewPostController: UIViewController, UIImagePickerControllerDelegate, UINa
         
         self.present(picker, animated: true, completion: nil)
     }
+    
+    
+    // MARK: - Storage Firebase methods
+    
+    private func uploadFrom(buffer: Data, complete: @escaping (_: URL!) -> Void) {
+//        let storage = Storage.storage()
+//        let storageRef = storage.reference().child("imgPosts")
+        
+        let fileRef = storageRef.child(UUID().uuidString + ".jpg")
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        
+        uploadTask = fileRef.putData(buffer, metadata: metadata) { (metaEnd, error) in
+            if error != nil {
+                print("Error en la subida de imagen.")
+            }
+        }
+        
+        uploadTask?.observe(.success, handler: { (snapshot) in
+            print("Parece que la imagen se ha subido bien.")
+            self.progressView.progress = 0.0
+            self.deleteSuccessOberserver()
+            
+            fileRef.downloadURL(completion: { (url, error) in
+                if error != nil {
+                    print("Error en la generación de URL de la imagen")
+                } else {
+                    print(url?.absoluteString ?? "VACÍA")
+                    complete(url)
+                }
+            })
+            
+        })
+        
+        uploadTask?.observe(.progress, handler: { (snapshot) in
+            print(snapshot.progress?.completedUnitCount ?? "sin datos")
+            let percentComplete = 100.0 * Double((snapshot.progress?.completedUnitCount)!) / Double((snapshot.progress?.totalUnitCount)!)
+            
+            self.progressView.progress = Float(percentComplete)
+        })
+    }
+    
+    private func deleteSuccessOberserver() {
+        
+    }
+    
 
 }
 

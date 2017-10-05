@@ -25,6 +25,7 @@ class OnBoardingViewController: UIViewController {
         
         if self.isUserLogin() {
             self.title = Auth.auth().currentUser?.email
+            self.performSegue(withIdentifier: "GotoMain", sender: nil)
         } else {
             self.observerUserActivity()
         }
