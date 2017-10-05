@@ -65,7 +65,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z60-VJ-e0s" id="Yux-IA-dDy">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -295,6 +295,12 @@
                                     <action selector="rateAction:" destination="RLF-Vz-fF2" eventType="valueChanged" id="c8Q-VX-3DO"/>
                                 </connections>
                             </slider>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dup-k5-KmP">
+                                <rect key="frame" x="0.0" y="64" width="375" height="4"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="4" id="ERe-q9-Hpb"/>
+                                </constraints>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -305,12 +311,15 @@
                             <constraint firstItem="agU-H1-t3M" firstAttribute="leading" secondItem="IA7-P1-d4v" secondAttribute="leading" id="Fd3-TE-dlm"/>
                             <constraint firstItem="zFy-Zq-mtb" firstAttribute="leading" secondItem="K7J-vm-gBF" secondAttribute="leadingMargin" id="IPb-zg-UsI"/>
                             <constraint firstItem="IA7-P1-d4v" firstAttribute="trailing" secondItem="ibJ-OG-dyg" secondAttribute="trailing" id="JfT-3a-JJ6"/>
+                            <constraint firstAttribute="trailing" secondItem="dup-k5-KmP" secondAttribute="trailing" id="Jmd-q1-Zke"/>
                             <constraint firstItem="IA7-P1-d4v" firstAttribute="top" secondItem="ibJ-OG-dyg" secondAttribute="bottom" constant="19" id="NJq-qd-g4u"/>
                             <constraint firstItem="zFy-Zq-mtb" firstAttribute="top" secondItem="Rhq-Yv-MHe" secondAttribute="bottom" constant="28" id="NjW-UY-FeB"/>
+                            <constraint firstItem="dup-k5-KmP" firstAttribute="top" secondItem="Sx0-PK-lHo" secondAttribute="bottom" id="NuG-6u-ekc"/>
                             <constraint firstItem="ibJ-OG-dyg" firstAttribute="top" secondItem="t7x-TB-4tM" secondAttribute="bottom" constant="22" id="Nyz-jC-ofp"/>
                             <constraint firstItem="t7x-TB-4tM" firstAttribute="trailing" secondItem="K7J-vm-gBF" secondAttribute="trailingMargin" id="QZc-xK-DaT"/>
                             <constraint firstItem="t7x-TB-4tM" firstAttribute="leading" secondItem="K7J-vm-gBF" secondAttribute="leadingMargin" id="SAj-bu-TfA"/>
                             <constraint firstItem="Rhq-Yv-MHe" firstAttribute="top" secondItem="agU-H1-t3M" secondAttribute="bottom" constant="24" id="UfX-jR-rQI"/>
+                            <constraint firstItem="dup-k5-KmP" firstAttribute="leading" secondItem="K7J-vm-gBF" secondAttribute="leading" id="ZFh-c9-5rv"/>
                             <constraint firstItem="PMD-nw-9gX" firstAttribute="top" secondItem="zFy-Zq-mtb" secondAttribute="bottom" constant="30" id="cna-ry-mcd"/>
                             <constraint firstItem="ibJ-OG-dyg" firstAttribute="trailing" secondItem="t7x-TB-4tM" secondAttribute="trailing" id="fLT-Ef-IT7"/>
                             <constraint firstItem="IA7-P1-d4v" firstAttribute="leading" secondItem="ibJ-OG-dyg" secondAttribute="leading" id="kj0-IW-NRE"/>
@@ -329,6 +338,7 @@
                     <connections>
                         <outlet property="imagePost" destination="Rhq-Yv-MHe" id="79k-8c-Nia"/>
                         <outlet property="postTxt" destination="agU-H1-t3M" id="zf2-6l-bYM"/>
+                        <outlet property="progressView" destination="dup-k5-KmP" id="OAT-iH-SYa"/>
                         <outlet property="rateSlider" destination="zFy-Zq-mtb" id="Reg-r8-Laq"/>
                         <outlet property="titleTxt" destination="ibJ-OG-dyg" id="9P0-BP-a87"/>
                     </connections>

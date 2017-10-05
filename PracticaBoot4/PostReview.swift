@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+
 
 class PostReview: UIViewController {
 
@@ -14,10 +16,15 @@ class PostReview: UIViewController {
     @IBOutlet weak var imagePost: UIImageView!
     @IBOutlet weak var postTxt: UITextField!
     @IBOutlet weak var titleTxt: UITextField!
+    @IBOutlet weak var progressView: UIProgressView!
+    
+    let storage = Storage.storage()
+    var taskDownload: StorageDownloadTask?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        self.downloadObject()
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,14 +38,70 @@ class PostReview: UIViewController {
 
     @IBAction func ratePost(_ sender: Any) {
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.taskDownload?.removeAllObservers()
     }
-    */
+    
+    // MARK: - Descarga
+    
+    private func downloadObject() {
+        // URL temporal
+        let urlTemp = "https://firebasestorage.googleapis.com/v0/b/mobivlog-bce7b.appspot.com/o/imgPosts%2F2D86057C-42CC-4CB7-9760-D488F3C61D70.jpg?alt=media&token=ce30e8f4-2cb6-43cb-acd3-f13a3da56b79"
+        
+        let storageRef = self.storage.reference(forURL: urlTemp)
+        
+//        let fileRef = storageRef.child("2D86057C-42CC-4CB7-9760-D488F3C61D70.jpg")
+        self.taskDownload = storageRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
+            if error != nil {
+                print("Error en descarga de la imagen.")
+                return
+            }
+            
+            if data != nil {
+                let image = UIImage(data: data!)
+                DispatchQueue.main.async {
+                    self.imagePost.image = image
+                }
+            }
+        }
+        
+        taskDownload?.observe(.progress) { (snapshot) in
+            let percentComplete = 100.0 * Double((snapshot.progress?.completedUnitCount)!) / Double((snapshot.progress?.totalUnitCount)!)
+            
+            self.progressView.progress = Float(percentComplete)
+        }
+        
+        taskDownload?.observe(.success) { (snapshot) in
+            self.progressView.progress = 0.0
+        }
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
