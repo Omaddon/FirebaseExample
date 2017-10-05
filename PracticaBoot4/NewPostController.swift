@@ -50,6 +50,7 @@ class NewPostController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBAction func savePostInCloud(_ sender: Any) {
         var newPost: [String: Any] = ["title" : self.titlePostTxt.text ?? "",
                                       "description" : self.textPostTxt.text ?? "",
+                                      "isVisible" : false,
                                       "owner" : Auth.auth().currentUser?.uid ?? "none"]
         
         // Primero subimos el objeto

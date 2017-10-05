@@ -10,26 +10,6 @@ import UIKit
 import Firebase
 
 
-struct Posts {
-    
-    let title       : String
-    let description : String
-    var postRef     : DatabaseReference?
-    
-    init(title: String, description: String) {
-        (self.title, self.description) = (title, description)
-        self.postRef = nil
-    }
-    
-    init?(snapShot: DataSnapshot) {
-        guard let item = snapShot.value as? [String: Any] else { return nil }
-        
-        self.title = item["title"] as! String
-        self.description = item["description"] as! String
-        self.postRef = snapShot.ref
-    }
-}
-
 
 class AuthorPostList: UITableViewController {
 
@@ -69,7 +49,9 @@ class AuthorPostList: UITableViewController {
     }
     
     private func loadAllPosts() {
-        postsReference.queryLimited(toFirst: 10).observe(.value) { (snapShot) in
+        postsReference.queryOrdered(byChild: "owner")
+            .queryEqual(toValue: Auth.auth().currentUser?.uid)
+            .observe(.value) { (snapShot) in
             
             var items: [Posts] = []
             
@@ -116,6 +98,8 @@ class AuthorPostList: UITableViewController {
         
         let publish = UITableViewRowAction(style: .normal, title: "Publicar") { (action, indexPath) in
             // Codigo para publicar el post
+            let currentPost = self.model[indexPath.row]
+            currentPost.postRef?.updateChildValues(["isVisible" : true])
         }
         publish.backgroundColor = UIColor.green
         let deleteRow = UITableViewRowAction(style: .destructive, title: "Eliminar") { (action, indexPath) in
