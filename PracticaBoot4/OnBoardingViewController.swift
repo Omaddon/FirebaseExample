@@ -20,11 +20,11 @@ class OnBoardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.title = Auth.auth().currentUser?.email ?? "Nadie registrado"
+        
+        // Ver Schema: saca información adicional por consola
         
         if self.isUserLogin() {
-            self.nextVCSegue()
+            self.title = Auth.auth().currentUser?.email
         } else {
             self.observerUserActivity()
         }
@@ -60,6 +60,8 @@ class OnBoardingViewController: UIViewController {
     }
     
     private func createAccount() {
+        Analytics.logEvent("Create_Account", parameters: ["method" : "mail-pwd"])
+        
         Auth.auth().createUser(withEmail: emailTxt.text!, password: pwdTxt.text!) { (user, error) in
                                 
             if let error = error {
@@ -71,6 +73,8 @@ class OnBoardingViewController: UIViewController {
                 
                 // Validar el mail del nuevo usuario
                 user?.sendEmailVerification(completion: { (error) in
+                    Analytics.logEvent("Send_email_verification", parameters: nil)
+                    
                     if let error = error {
                         print("Tenemos un error: \(error.localizedDescription)")
                     }
@@ -81,6 +85,8 @@ class OnBoardingViewController: UIViewController {
     
     
     private func login() {
+        Analytics.logEvent("User_Login", parameters: ["method" : "mail-pwd"])
+        
         Auth.auth().signIn(withEmail: emailTxt.text!, password: pwdTxt.text!) { (user, error) in
             if let error = error {
                 print("Tenemos un error: \(error.localizedDescription)")
@@ -94,9 +100,11 @@ class OnBoardingViewController: UIViewController {
     }
     
     private func logout() {
+        Analytics.logEvent("User_Logut", parameters: nil)
+        
         do {
             try Auth.auth().signOut()
-            self.title = Auth.auth().currentUser?.email ?? "Nadie registrado"
+            self.title = Auth.auth().currentUser?.email
         } catch {
             
         }
